@@ -5,28 +5,33 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: myapp
     ports:
       - "3306:3306"
 
   my-app:
-    image: dylancalo/my-docker-app
+    build: ./app
     environment:
       DB_HOST: db
       DB_USER: root
       DB_PASSWORD: example
-    depends_on:
-      - db
+      DB_NAME: myapp
+      PORT: 3000
     ports:
       - "3000:3000"
+    depends_on:
+      - db
 
   read-only-app:
-    image: dylancalo/my-docker-app-read-only
+    build: ./app
     environment:
       DB_HOST: db
       DB_USER: root
       DB_PASSWORD: example
-    depends_on:
-      - db
+      DB_NAME: myapp
+      PORT: 3001
     ports:
       - "3001:3000"
+    depends_on:
+      - db
 

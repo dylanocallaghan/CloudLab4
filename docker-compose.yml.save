@@ -1,3 +1,4 @@
+
 version: '3.1'
 
 services:
@@ -9,24 +10,20 @@ services:
       - "3306:3306"
 
   my-app:
-    image: dylancalo/my-docker-app
+    image: your-app-image
     environment:
       DB_HOST: db
       DB_USER: root
       DB_PASSWORD: example
     depends_on:
       - db
-    ports:
-      - "3000:3000"
 
   read-only-app:
-    image: dylancalo/my-docker-app-read-only
+    image: your-read-only-app-image
     environment:
       DB_HOST: db
       DB_USER: root
       DB_PASSWORD: example
     depends_on:
       - db
-    ports:
-      - "3001:3000"
 
