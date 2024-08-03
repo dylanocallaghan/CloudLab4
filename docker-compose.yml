@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: my-app
+    restart: always
+    environment:
+      DB_HOST: mysql
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: mydatabase
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+
+  read-only-app:
+    build: .
+    container_name: read-only-app
+    restart: always
+    environment:
+      DB_HOST: mysql
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: mydatabase
+    ports:
+      - "3001:3000"
+    depends_on:
+      - mysql
+    command: ["npm", "start", "--", "read-only"]  # Adjust based on how you start your app in read-only mode
+
+volumes:
+  mysql-data:
+
